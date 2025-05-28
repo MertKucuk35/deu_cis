@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "496854739991",
+    "project_id": "deu-cis",
+    "storage_bucket": "deu-cis.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496854739991:android:7e159d1f55fd4b509f8052",
+        "android_client_info": {
+          "package_name": "com.example.deu_cis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3Ly_GAyJ1VsoOuTqpBmxrnlPW3UDL28I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

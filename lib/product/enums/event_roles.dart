@@ -1,0 +1,1 @@
+enum EventRoles { attendee, speaker }
