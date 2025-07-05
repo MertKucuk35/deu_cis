@@ -9,7 +9,8 @@ import 'package:deu_cis/product/models/user_agenda_session.dart';
 import 'package:deu_cis/product/utility/http_helper.dart';
 
 abstract class IEventSessionService {
-  Future<List<EventSession>?> getEventSessions(int eventID);
+  Future<List<EventSession>?> getEventSessions(int eventID, int userID);
+  Future<EventSession?> getEventSession(int eventID, int userID);
   Future<List<UserAgendaSession>?> getUserAgenda(int userID);
   Future<UserAgendaSession?> addUserAgenda(int agendaSessionID, int userID);
   Future<void> deleteUserAgenda(int agendaSessionID);
@@ -17,10 +18,12 @@ abstract class IEventSessionService {
 
 class EventSessionService implements IEventSessionService {
   @override
-  Future<List<EventSession>?> getEventSessions(int eventID) async {
+  Future<List<EventSession>?> getEventSessions(int eventID, int userID) async {
     try {
       final response = await HttpHelper.postRequest(
-          MainEndPoints.event_sessions.name, '', {"id": eventID});
+          MainEndPoints.event_sessions.name,
+          '',
+          {"id": eventID, "user_id": userID});
       if (response.statusCode < 300) {
         final List<dynamic> decoded = jsonDecode(response.body);
         final List<EventSession> eventSessions =
@@ -42,7 +45,7 @@ class EventSessionService implements IEventSessionService {
       final response = await HttpHelper.postRequest(
           MainEndPoints.event_sessions.name,
           EventSessionsEndpoints.user_agenda.name,
-          {"id": userID});
+          {"user_id": userID});
       if (response.statusCode < 300) {
         final List<dynamic> decoded = jsonDecode(response.body);
         final List<UserAgendaSession> userAgendaSessions = decoded
@@ -83,7 +86,7 @@ class EventSessionService implements IEventSessionService {
   @override
   Future<void> deleteUserAgenda(int userAgendaSessionID) async {
     try {
-      final response = await HttpHelper.postRequest(
+      final response = await HttpHelper.deleteRequest(
           MainEndPoints.event_sessions.name,
           EventSessionsEndpoints.user_agenda_delete.name,
           {"id": userAgendaSessionID});
@@ -93,5 +96,25 @@ class EventSessionService implements IEventSessionService {
     } catch (e) {
       ErrorExceptions.printError(e);
     }
+  }
+
+  @override
+  Future<EventSession?> getEventSession(int eventID, int userID) async {
+    try {
+      final response = await HttpHelper.postRequest(
+          MainEndPoints.event_sessions.name,
+          EventSessionsEndpoints.single.name,
+          {"id": eventID, "user_id": userID});
+      if (response.statusCode < 300) {
+        final Map<String, dynamic> decoded = jsonDecode(response.body);
+        final eventSession = EventSession.fromMap(decoded);
+        return eventSession;
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      ErrorExceptions.printError(e);
+    }
+    return null;
   }
 }

@@ -26,4 +26,24 @@ class HttpHelper {
         body: jsonEncode(body));
     return response;
   }
+
+  static Future<http.Response> deleteRequest(
+      String endPoint, String? endPointDetail, Object? body) async {
+    final response = await http.delete(
+        headers: {'Content-Type': 'application/json'},
+        // Uri.parse('http://10.0.2.2:3000/api/users/login'),
+        Uri.parse(_baseURL + endPoint + '/' + (endPointDetail ?? '')),
+        body: jsonEncode(body));
+    return response;
+  }
+
+  static Future<http.Response> patchRequest(
+      String endPoint, String? endPointDetail, Object? body) async {
+    final response = await http.patch(
+        headers: {'Content-Type': 'application/json'},
+        // Uri.parse('http://10.0.2.2:3000/api/users/login'),
+        Uri.parse(_baseURL + endPoint + '/' + (endPointDetail ?? '')),
+        body: jsonEncode(body));
+    return response;
+  }
 }

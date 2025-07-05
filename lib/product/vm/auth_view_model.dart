@@ -30,7 +30,7 @@ class AuthViewModel extends ChangeNotifier {
       } else {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) {
-            return HomewView();
+            return HomeView();
           },
         ));
       }

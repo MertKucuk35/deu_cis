@@ -13,10 +13,18 @@ class CombinedAgendaViewModel extends ChangeNotifier {
   List<UserAgendaSession>? get userAgendaList => _userAgendaList;
 
   Future<void> fetchData({required int userID, required int eventID}) async {
-    _eventSessions = await _eventSessionService.getEventSessions(eventID);
-    _userAgendaList = await _eventSessionService.getUserAgenda(userID);
+    _eventSessions = await getEventSessions(eventID, userID);
+    _userAgendaList = await getUserAgenda(userID);
     _updateIsAddedStatus();
     notifyListeners();
+  }
+
+  Future<List<EventSession>?> getEventSessions(int eventID, int userID) async {
+    return await _eventSessionService.getEventSessions(eventID, userID);
+  }
+
+  Future<List<UserAgendaSession>?> getUserAgenda(int userID) async {
+    return await _eventSessionService.getUserAgenda(userID);
   }
 
   void _updateIsAddedStatus() {

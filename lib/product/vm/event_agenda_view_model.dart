@@ -10,12 +10,26 @@ class EventAgendaViewModel extends ChangeNotifier {
   List<EventSession>? _eventSessions;
   List<EventSession>? get eventSessions => _eventSessions;
 
+  List<EventSession>? get addedAgendaSessions {
+    if (_eventSessions != null) {
+      return _eventSessions!
+          .where((element) => element.isAdded == true)
+          .toList();
+    }
+    return null;
+  }
+
   IEventSessionService _eventSessionService = EventSessionService();
 
   Future<void> fetchEventSessions(int eventID) async {
     _eventSessions = null;
-    _eventSessions = await _eventSessionService.getEventSessions(eventID);
+    _eventSessions =
+        await getEventSessions(eventID, locator<AuthViewModel>().user!.id);
     controllIsAdded();
+  }
+
+  Future<List<EventSession>?> getEventSessions(int eventID, int userID) async {
+    return await _eventSessionService.getEventSessions(eventID, userID);
   }
 
   void controllIsAdded() {

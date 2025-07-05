@@ -18,7 +18,7 @@ class EventService implements IEventService {
         MainEndPoints.events.name,
         '',
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode < 300) {
         final List<dynamic> decoded = jsonDecode(response.body);
         final List<Event> events =
             decoded.map((event) => Event.fromMap(event)).toList();

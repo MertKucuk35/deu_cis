@@ -22,47 +22,67 @@ class EventAttendeListItem extends StatelessWidget {
     return InkWell(
       onTap: function,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        color: AppColors.white,
-        child: ListTile(
-          leading: eventAttende.photoUrl != null
-              ? (eventAttende.photoUrl != null
-                  ? CachedImage(
-                      isProfile: true,
-                      imageUrl: eventAttende.getImageURL(),
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      height: ResponsiveBreakpoints.of(context).isMobile
-                          ? MediaQuery.of(context).size.width * 0.2
-                          : MediaQuery.of(context).size.height * 0.2,
-                    )
-                  : Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        // width: MediaQuery.of(context).size.width * 0.2,
-                        // height: MediaQuery.of(context).size.width * 0.2,
-                        child: Icon(
-                          Icons.person,
-                          size: ResponsiveBreakpoints.of(context).isMobile
-                              ? MediaQuery.of(context).size.width * 0.2
-                              : MediaQuery.of(context).size.height * 0.2,
+          margin: const EdgeInsets.only(bottom: 10),
+          color: AppColors.white,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            color: AppColors.white,
+            child: Row(
+              children: [
+                Column(
+                  children: [
+                    if (eventAttende.photoUrl != null)
+                      Container(
+                        margin: const EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 2),
+                        child: CachedImage(
+                          isProfile: true,
+                          imageUrl: eventAttende.getImageURL(),
+                          width: 48,
+                          height: 48,
+                        ),
+                      )
+                    else
+                      Icon(Icons.person, size: 48),
+                    if (eventAttende.isSpeaker())
+                      Container(
+                        margin: const EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 2),
+                        color: AppColors.themeColor,
+                        child: Text(
+                          StringConsts.infBtnSpeaker,
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 10,
+                          ),
                         ),
                       ),
-                    ))
-              : null,
-          title: Text(
-            '${eventAttende.firstName ?? ''} ${eventAttende.lastName ?? ''}',
-            style: AppTextStyles.titleTextBlack,
-          ),
-          subtitle: eventAttende.isSpeaker()
-              ? Text(StringConsts.infBtnSpeaker,
-                  style: TextStyle(
-                      color: AppColors.white,
-                      backgroundColor: AppColors.themeColor))
-              : null,
-          trailing:
-              Icon(Icons.chevron_right_outlined, color: AppColors.themeColor),
-        ),
-      ),
+                  ],
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${eventAttende.title ?? ''} ${eventAttende.firstName ?? ''} ${eventAttende.lastName ?? ''}',
+                        style: AppTextStyles.titleTextBlack,
+                      ),
+                      eventAttende.position != null
+                          ? Text(
+                              '${eventAttende.position ?? ''} \n${eventAttende.institutionName ?? ''}',
+                              style: AppTextStyles.textFieldTextGrey,
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right_outlined, color: AppColors.themeColor),
+              ],
+            ),
+          )),
     );
   }
 }

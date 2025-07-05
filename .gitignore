@@ -1,45 +1,32 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Flutter/Dart ile ilgili genel dosyalar
 .dart_tool/
+.packages
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
-.pub/
-/build/
+build/
+.idea/
+android/.gradle/
+ios/Pods/
+*.iml
 
-# Symbolication related
-app.*.symbols
+# Firebase config dosyaları
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
 
-# Obfuscation related
-app.*.map.json
+# API key gibi hassas dosyalar
+assets/notifications_key/deu-cis-00b03cb78ce3.json.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# VSCode
+.vscode/
+
+# MacOS sistem dosyaları
+.DS_Store
+
+# Linux & Windows build dosyaları
+linux/
+windows/
+macos/
+
+# Crashlytics (Firebase)
+android/app/crashlytics-build.properties

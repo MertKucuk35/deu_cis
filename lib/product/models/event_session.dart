@@ -2,7 +2,8 @@
 import 'dart:convert';
 
 import 'package:deu_cis/product/models/base/base_event_session.dart';
-import 'package:deu_cis/product/models/speaker_mini.dart';
+import 'package:deu_cis/product/models/mini/speaker_mini.dart';
+import 'package:deu_cis/product/models/user_notes.dart';
 
 class EventSession extends BaseEventSession {
   bool isAdded = false;
@@ -14,6 +15,8 @@ class EventSession extends BaseEventSession {
       required super.title,
       required super.description,
       required super.location,
+      required super.userNote,
+      required super.speaker,
       required this.isAdded});
 
   EventSession.fromMap(Map<String, dynamic> json) {
@@ -23,6 +26,8 @@ class EventSession extends BaseEventSession {
     endDate = DateTime.tryParse(json['end_date'] as String);
     title = json['title'];
     description = json['description'];
+    userNote =
+        json['user_note'] != null ? UserNote.fromMap(json['user_note']) : null;
     location = json['location'];
     if (json['speaker'] != null) {
       speaker = <SpeakerMini>[];
@@ -40,6 +45,7 @@ class EventSession extends BaseEventSession {
     data['end_date'] = this.endDate;
     data['title'] = this.title;
     data['description'] = this.description;
+    data['user_note'] = this.userNote;
     data['location'] = this.location;
     if (this.speaker != null) {
       data['speaker'] = this.speaker!.map((v) => v.toJson()).toList();
@@ -61,6 +67,8 @@ class EventSession extends BaseEventSession {
     String? description,
     String? location,
     bool? isAdded,
+    List<SpeakerMini>? speaker,
+    UserNote? userNote,
   }) {
     return EventSession(
       id: id ?? this.id,
@@ -71,6 +79,8 @@ class EventSession extends BaseEventSession {
       description: description ?? this.description,
       location: location ?? this.location,
       isAdded: isAdded ?? this.isAdded,
+      speaker: speaker ?? this.speaker,
+      userNote: userNote ?? this.userNote,
     );
   }
 }

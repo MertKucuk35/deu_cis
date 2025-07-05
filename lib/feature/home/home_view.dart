@@ -1,25 +1,33 @@
 import 'package:deu_cis/feature/home/subview/agenda/user_agenda_view.dart';
-import 'package:deu_cis/feature/home/subview/events/event_view_model.dart';
-import 'package:deu_cis/feature/home/subview/qr_scan/qr_view.dart';
-import 'package:deu_cis/product/common/widget/cached_image.dart';
+import 'package:deu_cis/product/models/user_fcm_tokens.dart';
+import 'package:deu_cis/product/services/firebase/firebase_messaging_service.dart';
+import 'package:deu_cis/product/services/model_service/user_fcm_tokens_service.dart';
+
+import 'package:deu_cis/product/vm/event_view_model.dart';
+
+import 'package:deu_cis/feature/home/widget/drawer_widget.dart';
+
 import 'package:deu_cis/product/vm/user_agenda_view_model.dart';
 import 'package:deu_cis/feature/home/subview/events/events_list_view.dart';
 import 'package:deu_cis/product/vm/auth_view_model.dart';
 import 'package:deu_cis/locator.dart';
 import 'package:deu_cis/product/common/model/tab_item.dart';
 import 'package:deu_cis/product/constants/index.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class HomewView extends StatefulWidget {
-  const HomewView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<HomewView> createState() => _HomewViewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomewViewState extends State<HomewView> {
+class _HomeViewState extends State<HomeView> {
   bool isSearch = false;
   bool _isLoading = true;
+  UserFcmTokens? _userFcmTokens;
+  IUserFcmTokensService? _userFcmTokensService;
   TextEditingController searchController = TextEditingController();
   FocusNode searchFocusNode = FocusNode();
   final List<TabItem> _tabs = [
@@ -35,39 +43,58 @@ class _HomewViewState extends State<HomewView> {
   }
 
   Future<void> _setup() async {
+    _userFcmTokensService = UserFcmTokensService();
     await locator<EventViewModel>().fetchEvents();
     await locator<UserAgendaViewModel>()
         .fetchUserAgenda(locator<AuthViewModel>().user!.id);
+
     setState(() {
       _isLoading = false;
     });
+    await _fcmTokenControll();
+  }
+
+  Future<void> _fcmTokenControll() async {
+    await FirebaseNotificationService.requestForPermision();
+    _userFcmTokens = await _userFcmTokensService!
+        .getUserFcmTokens(locator<AuthViewModel>().user!.id);
+
+    if (_userFcmTokens == null) {
+      _userFcmTokens =
+          await _userFcmTokensService?.addUserFcmTokens(UserFcmTokens(
+        userId: locator<AuthViewModel>().user!.id,
+        mobileFcmToken:
+            kIsWeb ? null : await FirebaseNotificationService.getFCMToken(),
+        webFcmToken:
+            kIsWeb ? await FirebaseNotificationService.getFCMToken() : null,
+      ));
+    } else {
+      UserFcmTokens nowTokens = UserFcmTokens(
+        userId: locator<AuthViewModel>().user!.id,
+        mobileFcmToken:
+            kIsWeb ? null : await FirebaseNotificationService.getFCMToken(),
+        webFcmToken:
+            kIsWeb ? await FirebaseNotificationService.getFCMToken() : null,
+      );
+
+      if (nowTokens.mobileFcmToken != _userFcmTokens!.mobileFcmToken ||
+          nowTokens.webFcmToken != _userFcmTokens!.webFcmToken) {
+        _userFcmTokens =
+            await _userFcmTokensService!.updateUserFcmTokens(nowTokens);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           )
         : Scaffold(
-            drawer: Drawer(
-              child: Column(
-                children: [
-                  _drawerHeader(),
-                  ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) {
-                          return QRView();
-                        },
-                      ));
-                    },
-                    leading: Icon(Icons.qr_code),
-                    title: Text(StringConsts.qrCode),
-                  )
-                ],
-              ),
-            ),
+            drawer: DrawerWidget(),
             appBar: AppBar(
               title: isSearch
                   ? TextField(
@@ -116,77 +143,5 @@ class _HomewViewState extends State<HomewView> {
               ),
             ),
           );
-  }
-}
-
-class _drawerHeader extends StatelessWidget {
-  const _drawerHeader({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 120,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          AppColors.gradientFirst,
-          AppColors.gradientSecond,
-          AppColors.gradientThird
-        ]),
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Foreground semi-transparent overlay
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.black.withOpacity(0.3),
-            ),
-          ),
-          // Text stays above the overlay
-          Row(
-            children: [
-              SizedBox(
-                width: 30,
-              ),
-              CachedImage(
-                isProfile: true,
-                imageUrl: locator<AuthViewModel>().user!.getImageURL(),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    locator<AuthViewModel>().user!.firstName +
-                        ' ' +
-                        locator<AuthViewModel>().user!.lastName,
-                    style: AppTextStyles.titleTextWhite,
-                  ),
-                  Row(
-                    spacing: 5,
-                    children: [
-                      Icon(
-                        size: 14,
-                        Icons.edit,
-                        color: AppColors.greyLight,
-                      ),
-                      Text(
-                        StringConsts.editProfile,
-                        style: AppTextStyles.textFieldTextLightGrey,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 }

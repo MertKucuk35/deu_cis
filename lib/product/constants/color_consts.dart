@@ -12,6 +12,7 @@ class AppColors {
   static const Color drawerColor = Colors.white;
   static const Color white = Colors.white;
   static const Color blue = Colors.blue;
+  static Color blueLight = Colors.blue.shade200;
   static const Color gradientFirst = Color.fromRGBO(20, 84, 196, 0.6);
   static const Color gradientSecond = Color.fromRGBO(216, 163, 5, 0.6);
   static const Color gradientThird = Color.fromRGBO(227, 137, 2, 0.6);
@@ -20,5 +21,6 @@ class AppColors {
   static const Color black = Colors.black;
   static const Color grey = Colors.grey;
   static const Color greyLight = Color.fromARGB(255, 240, 240, 240);
+  static Color greyUltraLight = Colors.grey.shade100;
   //Color(0xFFE8F0FE);
 }

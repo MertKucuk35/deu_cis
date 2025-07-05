@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:deu_cis/feature/home/subview/events/event_desc_view.dart';
-import 'package:deu_cis/feature/home/subview/events/event_view_model.dart';
+import 'package:deu_cis/product/vm/event_view_model.dart';
 
 import 'package:deu_cis/product/common/widget/event_list_item.dart';
 import 'package:deu_cis/locator.dart';

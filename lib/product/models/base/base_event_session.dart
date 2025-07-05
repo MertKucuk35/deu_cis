@@ -1,4 +1,5 @@
-import 'package:deu_cis/product/models/speaker_mini.dart';
+import 'package:deu_cis/product/models/mini/speaker_mini.dart';
+import 'package:deu_cis/product/models/user_notes.dart';
 
 abstract class BaseEventSession {
   int? id;
@@ -8,6 +9,7 @@ abstract class BaseEventSession {
   String? title;
   String? description;
   String? location;
+  UserNote? userNote;
   List<SpeakerMini>? speaker;
 
   BaseEventSession(
@@ -18,5 +20,6 @@ abstract class BaseEventSession {
       this.title,
       this.description,
       this.location,
-      this.speaker});
+      this.speaker,
+      this.userNote});
 }

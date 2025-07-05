@@ -92,7 +92,7 @@ class _LoginViewState extends State<LoginView> {
                             Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
                               builder: (context) {
-                                return HomewView();
+                                return HomeView();
                               },
                             ));
                           } else {
@@ -105,9 +105,9 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(StringConsts.other),
-                  TextButton(
-                      onPressed: () {}, child: Text(StringConsts.register))
+                  // Text(StringConsts.other),
+                  // TextButton(
+                  //     onPressed: () {}, child: Text(StringConsts.register))
                 ],
               ),
             ),

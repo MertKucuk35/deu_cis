@@ -1,4 +1,4 @@
-import 'package:deu_cis/feature/home/subview/events/event_view_model.dart';
+import 'package:deu_cis/product/vm/event_view_model.dart';
 import 'package:deu_cis/locator.dart';
 import 'package:deu_cis/product/models/event_attende.dart';
 import 'package:deu_cis/product/services/model_service/event_attende_service.dart';

@@ -2,7 +2,8 @@
 import 'dart:convert';
 
 import 'package:deu_cis/product/models/base/base_event_session.dart';
-import 'package:deu_cis/product/models/speaker_mini.dart';
+import 'package:deu_cis/product/models/mini/speaker_mini.dart';
+import 'package:deu_cis/product/models/user_notes.dart';
 
 class UserAgendaSession extends BaseEventSession {
   int? sessionId;
@@ -16,6 +17,7 @@ class UserAgendaSession extends BaseEventSession {
       required super.location,
       required super.startDate,
       required super.endDate,
+      required super.userNote,
       required super.speaker});
 
   UserAgendaSession.fromMap(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class UserAgendaSession extends BaseEventSession {
     eventId = json['event_id'];
     title = json['title'];
     description = json['description'];
+
     location = json['location'];
     startDate = DateTime.tryParse(json['start_date'] as String);
     endDate = DateTime.tryParse(json['end_date'] as String);
@@ -45,6 +48,7 @@ class UserAgendaSession extends BaseEventSession {
     data['location'] = this.location;
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
+    data['user_note'] = this.userNote;
     if (this.speaker != null) {
       data['speaker'] = this.speaker!.map((v) => v.toJson()).toList();
     }
@@ -66,6 +70,7 @@ class UserAgendaSession extends BaseEventSession {
     DateTime? startDate,
     DateTime? endDate,
     List<SpeakerMini>? speaker,
+    UserNote? userNote,
   }) {
     return UserAgendaSession(
       id: id ?? this.id,
@@ -77,6 +82,7 @@ class UserAgendaSession extends BaseEventSession {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       speaker: speaker ?? this.speaker,
+      userNote: userNote ?? this.userNote,
     );
   }
 }

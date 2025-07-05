@@ -48,7 +48,8 @@ class AgendaListItem extends StatelessWidget {
                     ],
                   )
                 : null,
-            trailing: eventSession != null
+            trailing: eventSession != null &&
+                    eventSession!.startDate!.compareTo(DateTime.now()) > 0
                 ? InkWell(
                     onTap: trialingFunction,
                     child: (eventSession!.isAdded!)

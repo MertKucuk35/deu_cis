@@ -6,6 +6,7 @@ class AppTheme {
   const AppTheme._();
 
   static ThemeData lightTheme = ThemeData.light().copyWith(
+      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.themeColor),
       useMaterial3: true,
       appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: AppColors.drawerColor),

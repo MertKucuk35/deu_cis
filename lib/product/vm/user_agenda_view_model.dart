@@ -12,8 +12,12 @@ class UserAgendaViewModel extends ChangeNotifier {
 
   Future<void> fetchUserAgenda(int userID) async {
     _userAgendaList = null;
-    _userAgendaList = await _eventSessionService.getUserAgenda(userID);
+    _userAgendaList = await getUserAgenda(userID);
     notifyListeners();
+  }
+
+  Future<List<UserAgendaSession>?> getUserAgenda(int userID) async {
+    return await _eventSessionService.getUserAgenda(userID);
   }
 
   Future<void> deleteUserAgendaItem(int itemIndex) async {

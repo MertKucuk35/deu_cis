@@ -9,9 +9,19 @@ class EventAttende {
   String? lastName;
   String? photoUrl;
   String? role;
+  String? position;
+  String? title;
+  String? institutionName;
 
   EventAttende(
-      {this.userId, this.firstName, this.lastName, this.photoUrl, this.role});
+      {this.userId,
+      this.firstName,
+      this.lastName,
+      this.photoUrl,
+      this.role,
+      this.position,
+      this.title,
+      this.institutionName});
 
   bool isSpeaker() {
     if (role == EventRoles.speaker.name) {
@@ -36,6 +46,9 @@ class EventAttende {
     lastName = json['last_name'];
     photoUrl = json['photo_url'];
     role = json['role'];
+    position = json['position'];
+    title = json['title'];
+    institutionName = json['institution_name'];
   }
 
   Map<String, dynamic> toMap() {
@@ -45,6 +58,9 @@ class EventAttende {
     data['last_name'] = this.lastName;
     data['photo_url'] = this.photoUrl;
     data['role'] = this.role;
+    data['position'] = this.position;
+    data['title'] = this.title;
+    data['institution_name'] = this.institutionName;
     return data;
   }
 

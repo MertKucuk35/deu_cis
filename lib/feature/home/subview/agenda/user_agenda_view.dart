@@ -1,3 +1,4 @@
+import 'package:deu_cis/feature/event_session/event_session_view.dart';
 import 'package:deu_cis/product/vm/user_agenda_view_model.dart';
 import 'package:deu_cis/locator.dart';
 import 'package:deu_cis/product/common/widget/agenda_list_item.dart';
@@ -32,7 +33,15 @@ class _UserAgendaViewState extends State<UserAgendaView> {
               itemCount: eventAgendaViewModel.userAgendaList?.length ?? 0,
               itemBuilder: (context, index) {
                 return UserAgendaListItem(
-                  onTapFunction: () {},
+                  onTapFunction: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return EventSessionView(
+                            eventSessionID: eventAgendaViewModel
+                                .userAgendaList![index].sessionId!);
+                      },
+                    ));
+                  },
                   trialingFunction: () async {
                     await eventAgendaViewModel.deleteUserAgendaItem(index);
                     // setState(() {});
