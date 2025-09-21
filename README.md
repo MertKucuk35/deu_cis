@@ -13,3 +13,6 @@ Projede  Backend için node.js, mysql ve Frontend için flutter kullanmakta, ayr
 Web socket ile mesajlaşma ve yaklaşan olayların bildirimini gönderme gibi kullanımlarda içermekte
 
 Flutter kısmında state management paketi olarak Provider kullanıldı
+
+
+Projenin tanıtım videosu her ne kadar burdaki halinden öncede olsa https://youtu.be/SuSun1oJm08
